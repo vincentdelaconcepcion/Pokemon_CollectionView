@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:PokedexGen1.Models"
+             x:Class="PokedexGen1.MainPage"
+             Title="Kanto Pokédex"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F2F2F7">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <Grid HeightRequest="130">
+            <Image Source="pokedex_header.png" Aspect="AspectFill" />
+            <Label Text="Kanto Pokédex"
+                   TextColor="White"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Margin="140,0,0,0" />
+        </Grid>
+
+        <SearchBar x:Name="Search" Placeholder="Search by name, type or number..."
+                   TextChanged="OnSearchChanged" />
+
+        <Label x:Name="CountLabel" Grid.Row="1" Text="151 Pokémon" TextColor="#6B6B80"
+               FontSize="12" Margin="4,0,0,6" />
+
+        <CollectionView x:Name="PokemonView" Grid.Row="2"
+                        SelectionMode="Single"
+                        SelectionChanged="OnPokemonSelected">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2"
+                                 VerticalItemSpacing="10" HorizontalItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.EmptyView>
+                <Label Text="No Pokémon found" TextColor="#6B6B80"
+                       HorizontalOptions="Center" Margin="0,40" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Pokemon">
+                    <Border BackgroundColor="White" Stroke="{Binding Type1Color}"
+                            StrokeThickness="2" Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding NumberText}" FontSize="12" TextColor="#9A9AB0"
+                                   HorizontalOptions="End" />
+                            <Image Source="{Binding ImageUrl}" HeightRequest="110" Aspect="AspectFit" />
+                            <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
+                                   TextColor="#222233" HorizontalOptions="Center"
+                                   LineBreakMode="TailTruncation" />
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                                <Border BackgroundColor="{Binding Type1Color}" Padding="8,2" StrokeThickness="0">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                                    <Label Text="{Binding Type1}" FontSize="11" TextColor="White" FontAttributes="Bold" />
+                                </Border>
+                                <Border BackgroundColor="{Binding Type2Color}" Padding="8,2" StrokeThickness="0"
+                                        IsVisible="{Binding HasType2}">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                                    <Label Text="{Binding Type2}" FontSize="11" TextColor="White" FontAttributes="Bold" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

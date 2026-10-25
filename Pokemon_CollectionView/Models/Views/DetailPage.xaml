@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:PokedexGen1.Models"
+             x:Class="PokedexGen1.DetailPage"
+             BackgroundColor="#F2F2F7">
+
+    <ScrollView>
+        <VerticalStackLayout>
+
+            <!-- Hero header tinted by the Pokémon's primary type -->
+            <Grid x:Name="Hero" Padding="20,16,20,0" HeightRequest="300">
+                <Label x:Name="NumberLabel" TextColor="White" Opacity="0.8"
+                       FontSize="22" FontAttributes="Bold" HorizontalOptions="End" />
+                <Image x:Name="Artwork" HeightRequest="260" Aspect="AspectFit"
+                       VerticalOptions="End" />
+            </Grid>
+
+            <VerticalStackLayout Padding="20" Spacing="14">
+                <Label x:Name="NameLabel" FontSize="32" FontAttributes="Bold" TextColor="#222233" />
+
+                <HorizontalStackLayout x:Name="TypeRow" Spacing="8" />
+
+                <ActivityIndicator x:Name="Loader" IsRunning="True" Color="#CC0000" />
+                <Label x:Name="DescriptionLabel" FontSize="15" TextColor="#44445A" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Border BackgroundColor="White" Padding="14" StrokeThickness="0">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="14" /></Border.StrokeShape>
+                        <VerticalStackLayout>
+                            <Label Text="HEIGHT" FontSize="11" TextColor="#9A9AB0" />
+                            <Label x:Name="HeightLabel" Text="—" FontSize="18" FontAttributes="Bold" TextColor="#222233" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" BackgroundColor="White" Padding="14" StrokeThickness="0">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="14" /></Border.StrokeShape>
+                        <VerticalStackLayout>
+                            <Label Text="WEIGHT" FontSize="11" TextColor="#9A9AB0" />
+                            <Label x:Name="WeightLabel" Text="—" FontSize="18" FontAttributes="Bold" TextColor="#222233" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Border BackgroundColor="White" Padding="16" StrokeThickness="0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="14" /></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Base Stats" FontSize="16" FontAttributes="Bold" TextColor="#222233" />
+                        <VerticalStackLayout x:Name="StatsLayout" Spacing="8">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:StatItem">
+                                    <Grid ColumnDefinitions="70,40,*" ColumnSpacing="8">
+                                        <Label Text="{Binding Name}" FontSize="13" TextColor="#6B6B80" VerticalOptions="Center" />
+                                        <Label Grid.Column="1" Text="{Binding Value}" FontSize="13"
+                                               FontAttributes="Bold" TextColor="#222233" VerticalOptions="Center" />
+                                        <ProgressBar Grid.Column="2" Progress="{Binding Progress}"
+                                                     ProgressColor="#CC0000" VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="Back to Pokédex" BackgroundColor="#CC0000" TextColor="White"
+                        FontAttributes="Bold" CornerRadius="22" Clicked="OnBackClicked" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

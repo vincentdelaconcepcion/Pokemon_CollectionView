@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:PokedexGen1"
+       x:Class="PokedexGen1.AppShell"
+       Shell.BackgroundColor="#CC0000"
+       
+       Shell.TitleColor="White"
+       Shell.ForegroundColor="White">
+       
+    <ShellContent Title="Kanto Pokédex" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage"/>
+
+    <Shell.TitleView>
+        <Grid HorizontalOptions="Fill">
+            <Image Source="pokedex_header.png"/>
+            <Label Text="Kanto Pokédex"
+                   TextColor="White"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" 
+                   
+                   />
+        </Grid>
+    </Shell.TitleView>
+    
+</Shell>
