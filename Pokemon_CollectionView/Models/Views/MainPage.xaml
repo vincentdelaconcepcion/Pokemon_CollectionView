@@ -7,7 +7,7 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="#F2F2F7">
 
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
 
         <!-- ════════════════════════════════════════════════════ -->
         <!--           Pokédex Entry-Style Header              -->
@@ -200,55 +200,216 @@
             </HorizontalStackLayout>
         </ScrollView>
 
-        <!-- ── Count Label (Row 3) ───────────────────────── -->
-        <Label x:Name="CountLabel" Grid.Row="3" Text="151 Pokémon" TextColor="#6B6B80"
-               FontSize="12" Margin="16,2,0,4" />
+        <!-- ════════════════════════════════════════════════════ -->
+        <!--    Pokédex Main Screen Unit (Bezel + Screen HUD)   -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <Border Grid.Row="3"
+                Margin="10,6,10,10"
+                BackgroundColor="#D6DAE2"
+                Stroke="#9CA3AF" StrokeThickness="2.5"
+                Padding="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="18"/>
+            </Border.StrokeShape>
 
-        <!-- ── Pokémon Grid (Row 4) ──────────────────────── -->
-        <CollectionView x:Name="PokemonView" Grid.Row="4"
-                        SelectionMode="Single"
-                        SelectionChanged="OnPokemonSelected">
+            <Grid RowDefinitions="Auto,*,Auto">
 
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="2"
-                                 VerticalItemSpacing="10" HorizontalItemSpacing="10" />
-            </CollectionView.ItemsLayout>
+                <!-- ── 1. Top Bezel Bar: Scanner Sensors ──────── -->
+                <Grid Grid.Row="0" HeightRequest="28" Padding="14,0" BackgroundColor="#CCD1DC">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <CollectionView.EmptyView>
-                <Label Text="No Pokémon found" TextColor="#6B6B80"
-                       HorizontalOptions="Center" Margin="0,40" />
-            </CollectionView.EmptyView>
+                    <Label Grid.Column="0" Text="SILPH CO. / DEX-01"
+                           FontSize="9" FontAttributes="Bold"
+                           TextColor="#6B7280" CharacterSpacing="1"
+                           VerticalOptions="Center"/>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Pokemon">
-                    <Border BackgroundColor="White" Stroke="{Binding Type1Color}"
-                            StrokeThickness="2" Padding="10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="16" />
-                        </Border.StrokeShape>
+                    <!-- Dual Red Sensor Lights -->
+                    <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                        <Border WidthRequest="10" HeightRequest="10"
+                                BackgroundColor="#EF4444" Stroke="#991B1B" StrokeThickness="1">
+                            <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                            <Ellipse Fill="White" Opacity="0.5" WidthRequest="3" HeightRequest="3"
+                                     HorizontalOptions="Start" VerticalOptions="Start" Margin="2,1,0,0"/>
+                        </Border>
+                        <Border WidthRequest="10" HeightRequest="10"
+                                BackgroundColor="#EF4444" Stroke="#991B1B" StrokeThickness="1">
+                            <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                            <Ellipse Fill="White" Opacity="0.5" WidthRequest="3" HeightRequest="3"
+                                     HorizontalOptions="Start" VerticalOptions="Start" Margin="2,1,0,0"/>
+                        </Border>
+                    </HorizontalStackLayout>
 
-                        <VerticalStackLayout Spacing="4">
-                            <Label Text="{Binding NumberText}" FontSize="12" TextColor="#9A9AB0"
-                                   HorizontalOptions="End" />
-                            <Image Source="{Binding ImageUrl}" HeightRequest="110" Aspect="AspectFit" />
-                            <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
-                                   TextColor="#222233" HorizontalOptions="Center"
-                                   LineBreakMode="TailTruncation" />
-                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
-                                <Border BackgroundColor="{Binding Type1Color}" Padding="8,2" StrokeThickness="0">
-                                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                                    <Label Text="{Binding Type1}" FontSize="11" TextColor="White" FontAttributes="Bold" />
+                    <Label Grid.Column="2" Text="SYSTEM: ONLINE"
+                           FontSize="9" FontAttributes="Bold"
+                           TextColor="#16A34A" CharacterSpacing="1"
+                           HorizontalOptions="End" VerticalOptions="Center"/>
+                </Grid>
+
+                <!-- ── 2. The High-Tech Digital Screen ────────── -->
+                <Border Grid.Row="1"
+                        Margin="8,0,8,0"
+                        BackgroundColor="#0E1624"
+                        Stroke="#1F2937" StrokeThickness="2">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+
+                    <Grid RowDefinitions="Auto,*">
+
+                        <!-- Digital HUD Header Bar -->
+                        <Grid Grid.Row="0" HeightRequest="32" BackgroundColor="#152033" Padding="12,0">
+                            <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                <Border WidthRequest="7" HeightRequest="7" BackgroundColor="#22C55E">
+                                    <Border.StrokeShape><Ellipse/></Border.StrokeShape>
                                 </Border>
-                                <Border BackgroundColor="{Binding Type2Color}" Padding="8,2" StrokeThickness="0"
-                                        IsVisible="{Binding HasType2}">
-                                    <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
-                                    <Label Text="{Binding Type2}" FontSize="11" TextColor="White" FontAttributes="Bold" />
-                                </Border>
+                                <Label Text="DATA ARCHIVE" TextColor="#22C55E"
+                                       FontSize="10" FontAttributes="Bold"
+                                       CharacterSpacing="1" VerticalOptions="Center"/>
                             </HorizontalStackLayout>
-                        </VerticalStackLayout>
+
+                            <!-- Live Entry Counter Label (referenced in C#) -->
+                            <Label x:Name="CountLabel"
+                                   Text="151 Pokémon"
+                                   TextColor="#38BDF8"
+                                   FontSize="11" FontAttributes="Bold"
+                                   CharacterSpacing="1"
+                                   HorizontalOptions="End" VerticalOptions="Center"/>
+                        </Grid>
+
+                        <!-- Screen Viewport: Background Graphics + CollectionView -->
+                        <Grid Grid.Row="1">
+
+                            <!-- High-Tech Background HUD Details (non-interactive) -->
+                            <Grid InputTransparent="True" HorizontalOptions="Fill" VerticalOptions="Fill">
+
+                                <!-- Subtle CRT scanline grids -->
+                                <VerticalStackLayout Spacing="36" Opacity="0.04" Margin="0,12,0,0">
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                    <BoxView HeightRequest="1" Color="White" HorizontalOptions="Fill"/>
+                                </VerticalStackLayout>
+
+                                <!-- Holographic Pokédex / Pokéball Emblem -->
+                                <Grid HorizontalOptions="Center" VerticalOptions="Center"
+                                      WidthRequest="220" HeightRequest="220"
+                                      Opacity="0.07">
+                                    <Ellipse Stroke="#38BDF8" StrokeThickness="6"
+                                             WidthRequest="220" HeightRequest="220"/>
+                                    <BoxView HeightRequest="6" Color="#38BDF8"
+                                             VerticalOptions="Center" HorizontalOptions="Fill"/>
+                                    <Border WidthRequest="66" HeightRequest="66"
+                                            BackgroundColor="#0E1624"
+                                            Stroke="#38BDF8" StrokeThickness="5"
+                                            HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                                        <Ellipse Fill="#38BDF8" WidthRequest="28" HeightRequest="28"
+                                                 HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+                                </Grid>
+
+                                <!-- Corner Tech Reticles (Top-Left & Bottom-Right) -->
+                                <Label Text="⬡ KANTO_GRID_v1" TextColor="#1E3A5F" FontSize="9"
+                                       FontAttributes="Bold" Margin="10,6,0,0"
+                                       HorizontalOptions="Start" VerticalOptions="Start"/>
+                                <Label Text="SYS_ID: 001-151" TextColor="#1E3A5F" FontSize="9"
+                                       FontAttributes="Bold" Margin="0,0,10,6"
+                                       HorizontalOptions="End" VerticalOptions="End"/>
+                            </Grid>
+
+                            <!-- The Pokémon CollectionView -->
+                            <CollectionView x:Name="PokemonView"
+                                            Margin="10,10,10,10"
+                                            SelectionMode="Single"
+                                            SelectionChanged="OnPokemonSelected">
+
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical" Span="2"
+                                                     VerticalItemSpacing="10" HorizontalItemSpacing="10" />
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.EmptyView>
+                                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,60">
+                                        <Border WidthRequest="44" HeightRequest="44"
+                                                BackgroundColor="#33EF4444" Stroke="#EF4444" StrokeThickness="2"
+                                                HorizontalOptions="Center">
+                                            <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                                            <Label Text="!" TextColor="#EF4444" FontSize="24" FontAttributes="Bold"
+                                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        </Border>
+                                        <Label Text="NO MATCHING RECORD" TextColor="#EF4444"
+                                               FontAttributes="Bold" FontSize="14" CharacterSpacing="1"
+                                               HorizontalOptions="Center" />
+                                        <Label Text="No Pokémon found matching this query." TextColor="#64748B"
+                                               FontSize="12" HorizontalOptions="Center" />
+                                    </VerticalStackLayout>
+                                </CollectionView.EmptyView>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Pokemon">
+                                        <Border BackgroundColor="White" Stroke="{Binding Type1Color}"
+                                                StrokeThickness="2" Padding="10">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="16" />
+                                            </Border.StrokeShape>
+
+                                            <VerticalStackLayout Spacing="4">
+                                                <Label Text="{Binding NumberText}" FontSize="12" TextColor="#9A9AB0"
+                                                       HorizontalOptions="End" />
+                                                <Image Source="{Binding ImageUrl}" HeightRequest="110" Aspect="AspectFit" />
+                                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"
+                                                       TextColor="#222233" HorizontalOptions="Center"
+                                                       LineBreakMode="TailTruncation" />
+                                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                                                    <Border BackgroundColor="{Binding Type1Color}" Padding="8,2" StrokeThickness="0">
+                                                        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                                                        <Label Text="{Binding Type1}" FontSize="11" TextColor="White" FontAttributes="Bold" />
+                                                    </Border>
+                                                    <Border BackgroundColor="{Binding Type2Color}" Padding="8,2" StrokeThickness="0"
+                                                            IsVisible="{Binding HasType2}">
+                                                        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                                                        <Label Text="{Binding Type2}" FontSize="11" TextColor="White" FontAttributes="Bold" />
+                                                    </Border>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- ── 3. Bottom Bezel Bar: Speaker Vents & Buttons -->
+                <Grid Grid.Row="2" HeightRequest="30" Padding="14,0" BackgroundColor="#CCD1DC">
+                    <!-- Red Push-button (Left) -->
+                    <Border WidthRequest="16" HeightRequest="16"
+                            BackgroundColor="#DC2626" Stroke="#991B1B" StrokeThickness="1.5"
+                            HorizontalOptions="Start" VerticalOptions="Center">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                        <Ellipse Fill="White" Opacity="0.4" WidthRequest="4" HeightRequest="4"
+                                 HorizontalOptions="Start" VerticalOptions="Start" Margin="3,2,0,0"/>
                     </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+
+                    <!-- Speaker Ventilation Slits (Right) -->
+                    <HorizontalStackLayout Spacing="4" HorizontalOptions="End" VerticalOptions="Center">
+                        <BoxView WidthRequest="24" HeightRequest="3.5" Color="#64748B" CornerRadius="1.5"/>
+                        <BoxView WidthRequest="24" HeightRequest="3.5" Color="#64748B" CornerRadius="1.5"/>
+                        <BoxView WidthRequest="24" HeightRequest="3.5" Color="#64748B" CornerRadius="1.5"/>
+                    </HorizontalStackLayout>
+                </Grid>
+
+            </Grid>
+        </Border>
     </Grid>
 </ContentPage>
