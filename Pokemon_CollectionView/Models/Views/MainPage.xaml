@@ -7,26 +7,205 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="#F2F2F7">
 
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-        <Grid HeightRequest="130">
-            <Image Source="pokedex_header.png" Aspect="AspectFill" />
-            <Label Text="Kanto Pokédex"
-                   TextColor="White"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Margin="140,0,0,0" />
+        <!-- ════════════════════════════════════════════════════ -->
+        <!--           Pokédex Entry-Style Header              -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <Grid HeightRequest="140" BackgroundColor="#CC0000">
+
+            <!-- Top-left darker panel -->
+            <BoxView WidthRequest="148" BackgroundColor="#B30000"
+                     HorizontalOptions="Start" VerticalOptions="Fill"/>
+
+            <!-- Vertical divider between left panel and right -->
+            <BoxView WidthRequest="5" BackgroundColor="#111111"
+                     HorizontalOptions="Start" Margin="145,0,0,0"
+                     VerticalOptions="Fill"/>
+
+            <!-- ① Big Pokédex "eye" lens — top-left -->
+            <Border WidthRequest="64" HeightRequest="64"
+                    Margin="12,10,0,0"
+                    HorizontalOptions="Start" VerticalOptions="Start"
+                    BackgroundColor="#2255EE"
+                    Stroke="White" StrokeThickness="4">
+                <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                <Grid>
+                    <!-- Gloss reflection -->
+                    <Ellipse Fill="White" Opacity="0.35"
+                             WidthRequest="18" HeightRequest="18"
+                             HorizontalOptions="Start" VerticalOptions="Start"
+                             Margin="6,5,0,0"/>
+                </Grid>
+            </Border>
+
+            <!-- ② Small status indicator lights (beneath the eye) -->
+            <HorizontalStackLayout Margin="16,0,0,12"
+                                   HorizontalOptions="Start" VerticalOptions="End"
+                                   Spacing="8">
+                <Border WidthRequest="16" HeightRequest="16"
+                        BackgroundColor="#FF3333" Stroke="#CC1111" StrokeThickness="1">
+                    <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                </Border>
+                <Border WidthRequest="16" HeightRequest="16"
+                        BackgroundColor="#FFD700" Stroke="#CCAA00" StrokeThickness="1">
+                    <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                </Border>
+                <Border WidthRequest="13" HeightRequest="13"
+                        BackgroundColor="#33EE33" Stroke="#22BB22" StrokeThickness="1"
+                        VerticalOptions="Center">
+                    <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                </Border>
+            </HorizontalStackLayout>
+
+            <!-- ③ Pokédex screen / title panel (right side) -->
+            <Border Margin="158,12,12,12"
+                    BackgroundColor="#1A1A2E"
+                    Stroke="#444466" StrokeThickness="2"
+                    HorizontalOptions="Fill" VerticalOptions="Fill">
+                <Border.StrokeShape><RoundRectangle CornerRadius="8"/></Border.StrokeShape>
+                <Grid Padding="12,8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Screen label (like a CRT header) -->
+                    <Label Grid.Row="0"
+                           Text="— POKÉDEX UNIT —"
+                           TextColor="#55FF55" FontSize="9"
+                           FontAttributes="Bold" CharacterSpacing="2"
+                           HorizontalOptions="Center"/>
+
+                    <!-- Main title -->
+                    <Label Grid.Row="1"
+                           Text="Kanto Pokédex"
+                           TextColor="#EEEEFF" FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                    <!-- Region tag line -->
+                    <Label Grid.Row="2"
+                           Text="REGION: KANTO  ·  GEN I"
+                           TextColor="#8888AA" FontSize="9"
+                           CharacterSpacing="1"
+                           HorizontalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Horizontal black stripe at the bottom (Pokédex divider) -->
+            <BoxView HeightRequest="5" BackgroundColor="#111111"
+                     VerticalOptions="End" HorizontalOptions="Fill"/>
+
         </Grid>
 
-        <SearchBar x:Name="Search" Placeholder="Search by name, type or number..."
-                   TextChanged="OnSearchChanged" />
+        <!-- ── Search Bar (Row 1) ─────────────────────────── -->
+        <Border Grid.Row="1" Margin="12,10,12,4"
+                BackgroundColor="White"
+                Stroke="#DDDDE8" StrokeThickness="1.5">
+            <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+            <SearchBar x:Name="Search"
+                       Placeholder="Search by name, type or number…"
+                       TextChanged="OnSearchChanged"
+                       BackgroundColor="Transparent"/>
+        </Border>
 
-        <Label x:Name="CountLabel" Grid.Row="1" Text="151 Pokémon" TextColor="#6B6B80"
-               FontSize="12" Margin="4,0,0,6" />
+        <!-- ── Type Filter Navigation (Row 2) ────────────── -->
+        <ScrollView Grid.Row="2" Orientation="Horizontal"
+                    HorizontalScrollBarVisibility="Never"
+                    Margin="0,0,0,2">
+            <HorizontalStackLayout Spacing="8" Padding="12,6">
 
-        <CollectionView x:Name="PokemonView" Grid.Row="2"
+                <Button Text="All"       BackgroundColor="#555566" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="All"/>
+
+                <Button Text="Normal"    BackgroundColor="#9A9A77" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Normal"/>
+
+                <Button Text="Fire"      BackgroundColor="#E8702A" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Fire"/>
+
+                <Button Text="Water"     BackgroundColor="#4A78E8" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Water"/>
+
+                <Button Text="Grass"     BackgroundColor="#5AAE38" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Grass"/>
+
+                <Button Text="Electric"  BackgroundColor="#C09010" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Electric"/>
+
+                <Button Text="Ice"       BackgroundColor="#3AACAC" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Ice"/>
+
+                <Button Text="Fighting"  BackgroundColor="#B02828" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Fighting"/>
+
+                <Button Text="Poison"    BackgroundColor="#8833AA" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Poison"/>
+
+                <Button Text="Ground"    BackgroundColor="#B08030" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Ground"/>
+
+                <Button Text="Flying"    BackgroundColor="#7868D8" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Flying"/>
+
+                <Button Text="Psychic"   BackgroundColor="#D82060" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Psychic"/>
+
+                <Button Text="Bug"       BackgroundColor="#7A9810" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Bug"/>
+
+                <Button Text="Rock"      BackgroundColor="#908020" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Rock"/>
+
+                <Button Text="Ghost"     BackgroundColor="#604898" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Ghost"/>
+
+                <Button Text="Dragon"    BackgroundColor="#4820D8" TextColor="White"
+                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
+                        Padding="16,0" HeightRequest="34" BorderWidth="0"
+                        Clicked="OnTypeFilterClicked" CommandParameter="Dragon"/>
+
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- ── Count Label (Row 3) ───────────────────────── -->
+        <Label x:Name="CountLabel" Grid.Row="3" Text="151 Pokémon" TextColor="#6B6B80"
+               FontSize="12" Margin="16,2,0,4" />
+
+        <!-- ── Pokémon Grid (Row 4) ──────────────────────── -->
+        <CollectionView x:Name="PokemonView" Grid.Row="4"
                         SelectionMode="Single"
                         SelectionChanged="OnPokemonSelected">
 
