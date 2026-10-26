@@ -71,44 +71,7 @@
                        HeightRequest="230"
                        Aspect="AspectFit"
                        HorizontalOptions="Center" VerticalOptions="Center"
-                       Margin="0,46,0,44"/>
-
-                <!-- Bottom black divider stripe -->
-                <BoxView HeightRequest="6"
-                         BackgroundColor="#EE000000"
-                         VerticalOptions="End" Margin="0,0,0,38"
-                         HorizontalOptions="Fill"/>
-
-                <!-- Bottom bar overlay -->
-                <BoxView HeightRequest="38"
-                         BackgroundColor="#33000000"
-                         VerticalOptions="End" HorizontalOptions="Fill"/>
-
-                <!-- Bottom-left: decorative grip lines -->
-                <VerticalStackLayout HorizontalOptions="Start" VerticalOptions="End"
-                                     Margin="14,0,0,11" Spacing="5">
-                    <BoxView HeightRequest="4" WidthRequest="60"
-                             BackgroundColor="#66FFFFFF" CornerRadius="2"
-                             HorizontalOptions="Start"/>
-                    <BoxView HeightRequest="4" WidthRequest="38"
-                             BackgroundColor="#66FFFFFF" CornerRadius="2"
-                             HorizontalOptions="Start"/>
-                </VerticalStackLayout>
-
-                <!-- Bottom-right: decorative button circles -->
-                <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="End"
-                                       Margin="0,0,14,8" Spacing="10">
-                    <Border WidthRequest="24" HeightRequest="24"
-                            BackgroundColor="#00000000"
-                            Stroke="#77FFFFFF" StrokeThickness="2.5">
-                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
-                    </Border>
-                    <Border WidthRequest="24" HeightRequest="24"
-                            BackgroundColor="#00000000"
-                            Stroke="#77FFFFFF" StrokeThickness="2.5">
-                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
-                    </Border>
-                </HorizontalStackLayout>
+                       Margin="0,46,0,0"/>
 
             </Grid>
 
