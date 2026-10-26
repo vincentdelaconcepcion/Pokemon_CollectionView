@@ -20,6 +20,7 @@ public partial class DetailPage : ContentPage
     {
         Title = p.Name;
         NameLabel.Text = p.Name;
+
         NumberLabel.Text = p.NumberText;
         Artwork.Source = p.ImageUrl;
         Hero.BackgroundColor = p.Type1Color;

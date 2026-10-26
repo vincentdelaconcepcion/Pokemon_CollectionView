@@ -8,12 +8,108 @@
     <ScrollView>
         <VerticalStackLayout>
 
-            <!-- Hero header tinted by the Pokémon's primary type -->
-            <Grid x:Name="Hero" Padding="20,16,20,0" HeightRequest="300">
-                <Label x:Name="NumberLabel" TextColor="White" Opacity="0.8"
-                       FontSize="22" FontAttributes="Bold" HorizontalOptions="End" />
-                <Image x:Name="Artwork" HeightRequest="260" Aspect="AspectFit"
-                       VerticalOptions="End" />
+            <!-- ═══════════════════════════════════════════════ -->
+            <!--         Pokédex-Style Hero Header              -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <Grid x:Name="Hero" HeightRequest="340" Padding="0">
+
+                <!-- Top bar overlay (darkened panel) -->
+                <BoxView HeightRequest="54"
+                         BackgroundColor="#33000000"
+                         VerticalOptions="Start" HorizontalOptions="Fill"/>
+
+                <!-- Iconic black horizontal divider stripe -->
+                <BoxView HeightRequest="6"
+                         BackgroundColor="#EE000000"
+                         VerticalOptions="Start" Margin="0,51,0,0"
+                         HorizontalOptions="Fill"/>
+
+                <!-- ① Large Pokédex "eye" — blue lens, top-left -->
+                <Border WidthRequest="50" HeightRequest="50"
+                        Margin="12,2,0,0"
+                        HorizontalOptions="Start" VerticalOptions="Start"
+                        BackgroundColor="#2255EE"
+                        Stroke="White" StrokeThickness="3">
+                    <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    <Grid>
+                        <!-- Lens reflection highlight -->
+                        <Ellipse Fill="White" Opacity="0.35"
+                                 WidthRequest="14" HeightRequest="14"
+                                 HorizontalOptions="Start" VerticalOptions="Start"
+                                 Margin="5,4,0,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- ② Status indicator lights (red · yellow · green) -->
+                <HorizontalStackLayout Margin="72,16,0,0"
+                                       HorizontalOptions="Start" VerticalOptions="Start"
+                                       Spacing="8">
+                    <Border WidthRequest="15" HeightRequest="15"
+                            BackgroundColor="#FF3333" Stroke="#CC1111" StrokeThickness="1">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border WidthRequest="15" HeightRequest="15"
+                            BackgroundColor="#FFD700" Stroke="#CCAA00" StrokeThickness="1">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border WidthRequest="12" HeightRequest="12"
+                            BackgroundColor="#33EE33" Stroke="#22BB22" StrokeThickness="1"
+                            VerticalOptions="Center">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                </HorizontalStackLayout>
+
+                <!-- ③ Pokédex entry number (top-right) -->
+                <Label x:Name="NumberLabel"
+                       TextColor="White" FontSize="20" FontAttributes="Bold"
+                       Opacity="0.92" CharacterSpacing="1"
+                       HorizontalOptions="End" VerticalOptions="Start"
+                       Margin="0,14,16,0"/>
+
+                <!-- ④ Pokémon Artwork — large, centred -->
+                <Image x:Name="Artwork"
+                       HeightRequest="230"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center" VerticalOptions="Center"
+                       Margin="0,46,0,44"/>
+
+                <!-- Bottom black divider stripe -->
+                <BoxView HeightRequest="6"
+                         BackgroundColor="#EE000000"
+                         VerticalOptions="End" Margin="0,0,0,38"
+                         HorizontalOptions="Fill"/>
+
+                <!-- Bottom bar overlay -->
+                <BoxView HeightRequest="38"
+                         BackgroundColor="#33000000"
+                         VerticalOptions="End" HorizontalOptions="Fill"/>
+
+                <!-- Bottom-left: decorative grip lines -->
+                <VerticalStackLayout HorizontalOptions="Start" VerticalOptions="End"
+                                     Margin="14,0,0,11" Spacing="5">
+                    <BoxView HeightRequest="4" WidthRequest="60"
+                             BackgroundColor="#66FFFFFF" CornerRadius="2"
+                             HorizontalOptions="Start"/>
+                    <BoxView HeightRequest="4" WidthRequest="38"
+                             BackgroundColor="#66FFFFFF" CornerRadius="2"
+                             HorizontalOptions="Start"/>
+                </VerticalStackLayout>
+
+                <!-- Bottom-right: decorative button circles -->
+                <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="End"
+                                       Margin="0,0,14,8" Spacing="10">
+                    <Border WidthRequest="24" HeightRequest="24"
+                            BackgroundColor="#00000000"
+                            Stroke="#77FFFFFF" StrokeThickness="2.5">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border WidthRequest="24" HeightRequest="24"
+                            BackgroundColor="#00000000"
+                            Stroke="#77FFFFFF" StrokeThickness="2.5">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                </HorizontalStackLayout>
+
             </Grid>
 
             <VerticalStackLayout Padding="20" Spacing="14">
