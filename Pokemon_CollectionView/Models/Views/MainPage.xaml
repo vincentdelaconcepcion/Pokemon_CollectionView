@@ -114,8 +114,8 @@
         <!-- ── Type Filter Navigation (Row 2) ────────────── -->
         <ScrollView Grid.Row="2" Orientation="Horizontal"
                     HorizontalScrollBarVisibility="Never"
-                    Margin="0,0,0,2">
-            <HorizontalStackLayout Spacing="8" Padding="12,6">
+                    Margin="0,0,0,2" >
+            <HorizontalStackLayout Spacing="8" Padding="12,6" HorizontalOptions="Center">
 
                 <Button Text="All"       BackgroundColor="#555566" TextColor="White"
                         FontSize="12" FontAttributes="Bold" CornerRadius="20"
