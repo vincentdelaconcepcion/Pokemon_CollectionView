@@ -8,6 +8,7 @@ namespace Pokemon_CollectionView
         public App()
         {
             InitializeComponent();
+
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

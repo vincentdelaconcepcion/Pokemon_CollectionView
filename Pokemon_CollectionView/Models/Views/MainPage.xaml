@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:PokedexGen1.Models"
+             xmlns:models="clr-namespace:Pokemon_CollectionView.Models.Models"
              x:Class="PokedexGen1.MainPage"
              Title="Kanto Pokédex"
              Shell.NavBarIsVisible="False"
@@ -111,94 +111,150 @@
                        BackgroundColor="Transparent"/>
         </Border>
 
-        <!-- ── Type Filter Navigation (Row 2) ────────────── -->
-        <ScrollView Grid.Row="2" Orientation="Horizontal"
-                    HorizontalScrollBarVisibility="Never"
-                    Margin="0,0,0,2" >
-            <HorizontalStackLayout Spacing="8" Padding="12,6" HorizontalOptions="Center">
+        <!-- ════════════════════════════════════════════════════ -->
+        <!--        Pokédex Type Matrix Navigation Panel          -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <Border Grid.Row="2"
+                Margin="10,4,10,4"
+                BackgroundColor="White"
+                Stroke="#DDE1EA"
+                StrokeThickness="1.5">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16"/>
+            </Border.StrokeShape>
 
-                <Button Text="All"       BackgroundColor="#555566" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="All"/>
+            <VerticalStackLayout Spacing="6" Padding="10,7,10,7">
 
-                <Button Text="Normal"    BackgroundColor="#9A9A77" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Normal"/>
+                <!-- ── Navigation Panel Status & Summary Bar ────── -->
+                <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
 
-                <Button Text="Fire"      BackgroundColor="#E8702A" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Fire"/>
+                    <!-- Left: Pokédex Terminal Scanner Status -->
+                    <HorizontalStackLayout Grid.Column="0" Spacing="7" VerticalOptions="Center">
+                        <!-- Glowing LED Status Dot -->
+                        <Border WidthRequest="8" HeightRequest="8"
+                                BackgroundColor="#10B981"
+                                Stroke="#059669" StrokeThickness="1"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                        </Border>
 
-                <Button Text="Water"     BackgroundColor="#4A78E8" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Water"/>
+                        <Label Text="TYPE MATRIX"
+                               FontSize="10" FontAttributes="Bold"
+                               TextColor="#1E293B" CharacterSpacing="1"
+                               VerticalOptions="Center"/>
 
-                <Button Text="Grass"     BackgroundColor="#5AAE38" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Grass"/>
+                        <Label Text="· ELEMENT CLASSIFICATION"
+                               FontSize="9" FontAttributes="Bold"
+                               TextColor="#94A3B8" CharacterSpacing="0.8"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
 
-                <Button Text="Electric"  BackgroundColor="#C09010" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Electric"/>
+                    <!-- Right: Active Selection Badge / 1-Tap Reset Button -->
+                    <Border Grid.Column="1"
+                            x:Name="ActiveFilterBadge"
+                            BackgroundColor="#F1F5F9"
+                            Stroke="#CBD5E1"
+                            StrokeThickness="1"
+                            Padding="8,3"
+                            VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12"/>
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnResetTypeClicked"/>
+                        </Border.GestureRecognizers>
 
-                <Button Text="Ice"       BackgroundColor="#3AACAC" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Ice"/>
+                        <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                            <Label x:Name="ActiveFilterIcon" Text="🔘" FontSize="11" VerticalOptions="Center"/>
+                            <Label x:Name="ActiveFilterLabel" Text="ALL (151)"
+                                   FontSize="10" FontAttributes="Bold"
+                                   TextColor="#334155" CharacterSpacing="0.5"
+                                   VerticalOptions="Center"/>
+                            <Label x:Name="ActiveFilterResetPrompt" Text="✕"
+                                   FontSize="10" FontAttributes="Bold"
+                                   TextColor="#EF4444" IsVisible="False"
+                                   VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
 
-                <Button Text="Fighting"  BackgroundColor="#B02828" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Fighting"/>
+                <!-- ── Scrollable Designated Type Capsules ────── -->
+                <ScrollView Orientation="Horizontal"
+                            HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout x:Name="TypeFilterStack"
+                                           BindableLayout.ItemsSource="{Binding TypeFilters}"
+                                           Spacing="9"
+                                           Padding="2,2,4,4">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:TypeFilterModel">
+                                <Border Background="{Binding CardBackground}"
+                                        Stroke="{Binding CardBorderColor}"
+                                        StrokeThickness="{Binding CardBorderThickness}"
+                                        Padding="10,5,12,5"
+                                        HeightRequest="56"
+                                        VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14"/>
+                                    </Border.StrokeShape>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnTypeFilterTapped" CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
 
-                <Button Text="Poison"    BackgroundColor="#8833AA" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Poison"/>
+                                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
 
-                <Button Text="Ground"    BackgroundColor="#B08030" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Ground"/>
+                                        <!-- Designated Type Icon Pod -->
+                                        <Border WidthRequest="36" HeightRequest="36"
+                                                Background="{Binding IconContainerBackground}"
+                                                Stroke="{Binding IconBorderColor}"
+                                                StrokeThickness="1.5"
+                                                VerticalOptions="Center">
+                                            <Border.StrokeShape>
+                                                <Ellipse/>
+                                            </Border.StrokeShape>
+                                            <Label Text="{Binding Icon}"
+                                                   FontSize="18"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+                                        </Border>
 
-                <Button Text="Flying"    BackgroundColor="#7868D8" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Flying"/>
+                                        <!-- Designated Type Typography & Subtitle -->
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="13"
+                                                   TextColor="{Binding NameColor}"
+                                                   CharacterSpacing="0.4"/>
+                                            <Label Text="{Binding Subtitle}"
+                                                   FontSize="8.5"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{Binding SubtitleColor}"
+                                                   CharacterSpacing="0.4"/>
+                                        </VerticalStackLayout>
 
-                <Button Text="Psychic"   BackgroundColor="#D82060" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Psychic"/>
+                                        <!-- Designated Type Count Badge -->
+                                        <Border BackgroundColor="{Binding BadgeBackground}"
+                                                Padding="7,2"
+                                                Margin="4,0,0,0"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Center">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="10"/>
+                                            </Border.StrokeShape>
+                                            <Label Text="{Binding Count}"
+                                                   FontSize="11"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{Binding BadgeTextColor}"/>
+                                        </Border>
 
-                <Button Text="Bug"       BackgroundColor="#7A9810" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Bug"/>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
 
-                <Button Text="Rock"      BackgroundColor="#908020" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Rock"/>
-
-                <Button Text="Ghost"     BackgroundColor="#604898" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Ghost"/>
-
-                <Button Text="Dragon"    BackgroundColor="#4820D8" TextColor="White"
-                        FontSize="12" FontAttributes="Bold" CornerRadius="20"
-                        Padding="16,0" HeightRequest="34" BorderWidth="0"
-                        Clicked="OnTypeFilterClicked" CommandParameter="Dragon"/>
-
-            </HorizontalStackLayout>
-        </ScrollView>
+            </VerticalStackLayout>
+        </Border>
 
         <!-- ════════════════════════════════════════════════════ -->
         <!--    Pokédex Main Screen Unit (Bezel + Screen HUD)   -->

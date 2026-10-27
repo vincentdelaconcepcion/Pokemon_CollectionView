@@ -24,7 +24,7 @@
                          VerticalOptions="Start" Margin="0,51,0,0"
                          HorizontalOptions="Fill"/>
 
-                <!-- ① Large Pokédex "eye" — blue lens, top-left -->
+                <!--  Large Pokédex "eye" — blue lens, top-left -->
                 <Border WidthRequest="50" HeightRequest="50"
                         Margin="12,2,0,0"
                         HorizontalOptions="Start" VerticalOptions="Start"
@@ -40,7 +40,7 @@
                     </Grid>
                 </Border>
 
-                <!-- ② Status indicator lights (red · yellow · green) -->
+                <!--  Status indicator lights (red · yellow · green) -->
                 <HorizontalStackLayout Margin="72,16,0,0"
                                        HorizontalOptions="Start" VerticalOptions="Start"
                                        Spacing="8">
@@ -59,14 +59,14 @@
                     </Border>
                 </HorizontalStackLayout>
 
-                <!-- ③ Pokédex entry number (top-right) -->
+                <!--  Pokédex entry number (top-right) -->
                 <Label x:Name="NumberLabel"
                        TextColor="White" FontSize="20" FontAttributes="Bold"
                        Opacity="0.92" CharacterSpacing="1"
                        HorizontalOptions="End" VerticalOptions="Start"
                        Margin="0,14,16,0"/>
 
-                <!-- ④ Pokémon Artwork — large, centred -->
+                <!--  Pokémon Artwork — large, centred -->
                 <Image x:Name="Artwork"
                        HeightRequest="230"
                        Aspect="AspectFit"
